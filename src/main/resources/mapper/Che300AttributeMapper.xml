@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 车300详细参数 -->
+<mapper namespace="cn.victorplus.vehicle.mapper.Che300AttributeMapper">
+
+    <sql id="columns">
+        a.`id`
+        , a.`model_id`
+        , a.`para_type`
+        , a.`para_key`
+        , a.`para_value`
+        , a.`created`
+        , a.`modified`
+    </sql>
+
+    <resultMap type="cn.victorplus.vehicle.bean.db.Che300Attribute" id="beanMap">
+        <!-- 主键id -->
+        <id column="id" property="id"/>
+        <!-- 车型ID -->
+        <result column="model_id" property="modelId"/>
+        <!-- 参数类型 -->
+        <result column="para_type" property="paraType"/>
+        <!-- 参数key -->
+        <result column="para_key" property="paraKey"/>
+        <!-- 参数值 -->
+        <result column="para_value" property="paraValue"/>
+        <!--  -->
+        <result column="created" property="created"/>
+        <!--  -->
+        <result column="modified" property="modified"/>
+    </resultMap>
+
+    <!-- 单个添加车300详细参数 -->
+    <insert id="batchAdd">
+        INSERT INTO `che300_attribute` (
+            `model_id`
+            , `para_type`
+            , `para_key`
+            , `para_value`
+            , `created`
+            , `modified`
+        ) VALUES (
+        <foreach collection="collect" separator=", (" item="item">
+            #{item.modelId}
+            , #{item.paraType}
+            , #{item.paraKey}
+            , #{item.paraValue}
+            , #{item.created}
+            , #{item.modified}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 单个添加车300详细参数 -->
+    <insert id="add"     useGeneratedKeys="true" keyProperty="id"
+            parameterType="cn.victorplus.vehicle.bean.db.Che300Attribute">
+        INSERT INTO `che300_attribute` (
+            `model_id`
+            , `para_type`
+            , `para_key`
+            , `para_value`
+            , `created`
+            , `modified`
+        ) VALUES (
+            #{modelId}
+            , #{paraType}
+            , #{paraKey}
+            , #{paraValue}
+            , #{created}
+            , #{modified}
+        )
+    </insert>
+
+    <!-- 根据主键获取实体 -->
+    <select id="get" resultMap="beanMap">
+        SELECT
+        <include refid="columns"/>
+        FROM `che300_attribute` a
+        WHERE `id` = #{id}
+    </select>
+
+    <!-- 根据主键查询记录数 -->
+    <select id="countByModelId" resultType="int">
+        SELECT
+        count(1)
+        FROM `che300_attribute`
+        WHERE `model_id` = #{modelId}
+    </select>
+
+    <!-- 根据主键删除实体 -->
+    <delete id="delete">
+        DELETE FROM `che300_attribute` WHERE `id` = #{id}
+    </delete>
+
+    <!-- 更新车300详细参数 -->
+    <update id="update" parameterType="cn.victorplus.vehicle.bean.db.Che300Attribute">
+        UPDATE `che300_attribute`
+        SET
+            `model_id` = #{modelId}
+            , `para_type` = #{paraType}
+            , `para_key` = #{paraKey}
+            , `para_value` = #{paraValue}
+            , `created` = #{created}
+            , `modified` = #{modified}
+        WHERE `id` = #{id}
+    </update>
+
+    <!-- 更新车300详细参数，null值字段不更新 -->
+    <update id="updateIgnoreNull" parameterType="cn.victorplus.vehicle.bean.db.Che300Attribute">
+        UPDATE `che300_attribute`
+        SET
+        <if test="modelId != null">
+            `model_id` = #{modelId}
+        </if>
+        <if test="paraType != null">
+            , `para_type` = #{paraType}
+        </if>
+        <if test="paraKey != null">
+            , `para_key` = #{paraKey}
+        </if>
+        <if test="paraValue != null">
+            , `para_value` = #{paraValue}
+        </if>
+        <if test="created != null">
+            , `created` = #{created}
+        </if>
+        <if test="modified != null">
+            , `modified` = #{modified}
+        </if>
+        WHERE `id` = #{id}
+    </update>
+
+    <!-- 根据主键获取实体 -->
+    <select id="findByModelId" resultMap="beanMap">
+        SELECT
+        <include refid="columns"/>
+        FROM `che300_attribute` a
+        WHERE a.`model_id` = #{modelId}
+    </select>
+
+</mapper>

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.victorplus.vehicle.mapper.Che300BrandMapper">
+	<!--查询字段-->
+	<sql id="columns">
+	    a.`brand_id`,
+		a.`brand_name`,
+		a.`brand_first_letter`,
+		a.`brand_createtime`,
+		a.`brand_modifytime`
+	</sql>
+	
+	<!--查询结果集-->
+	<resultMap id="beanMap" type="cn.victorplus.vehicle.bean.db.Che300Brand">
+	    <result property="brandId" column="brand_id"/>
+	    <result property="brandName" column="brand_name"/>
+	    <result property="brandFirstLetter" column="brand_first_letter"/>
+	    <result property="brandCreatetime" column="brand_createtime"/>
+	    <result property="brandModifytime" column="brand_modifytime"/>
+	</resultMap>
+	
+	<!--根据主键获取实体-->
+	<select id="get" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM
+		che300_brand a
+	  WHERE 
+	     a.brand_id = #{brandId}
+	</select>
+    
+    	
+	<!--根据品牌关键字获取实体列表-->
+	<select id="getAll" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM
+		che300_brand a
+	  <where>
+	  	 <if test="name != null">
+           a.`brand_name` like CONCAT('%',#{name},'%')
+      	  </if>
+	  	 <if test="firstLetter != null">
+          AND a.`brand_first_letter` = #{firstLetter}
+      	  </if>
+	  </where>
+	  ORDER BY a.`brand_first_letter` asc, a.`brand_name` asc
+	</select>
+
+	<select id="countBrand" resultType="int">
+        SELECT count(1) FROM `che300_brand` WHERE `brand_id` = #{brandId}
+    </select>
+
+
+	<!--根据品牌名称获取实体列表-->
+	<select id="getByName" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM
+		che300_brand a
+	  <where>
+	  	 <if test="name != null">
+           a.`brand_name` like CONCAT('%',#{name},'%')
+      	  </if>
+	  	 <if test="firstLetter != null">
+          AND a.`brand_first_letter` = #{firstLetter}
+      	  </if>
+	  </where>
+	  ORDER BY a.`brand_first_letter` asc, a.`brand_name` asc
+	</select>
+    
+	<!-- 新增记录 -->
+	<insert id="add" useGeneratedKeys="true" keyProperty="brandId" parameterType="cn.victorplus.vehicle.bean.db.Che300Brand">
+	  INSERT INTO che300_brand
+	    (
+	    `brand_name`,
+	    `brand_first_letter`,
+	    `brand_createtime`,
+	    `brand_modifytime`,
+	    )
+	   VALUES 
+	   (
+	    #{brandName},
+	    #{brandFirstLetter},
+	    #{brandCreatetime},
+	    #{brandModifytime},
+	   )
+	</insert>
+    
+    
+    <!--更新实体信息-->
+    <update id="update" parameterType="cn.victorplus.vehicle.bean.db.Che300Brand">
+      UPDATE 
+      	che300_brand
+      SET 
+        `brand_name` = #{brandName},
+        `brand_first_letter` = #{brandFirstLetter},
+        `brand_createtime` = #{brandCreatetime},
+        `brand_modifytime` = #{brandModifytime}
+      WHERE  brand_id = #{brandId}
+    </update>
+    
+    <!--更新实体信息，null值字段不更新-->
+    <update id="updateIgnoreNull" parameterType="cn.victorplus.vehicle.bean.db.Che300Brand">
+        UPDATE che300_brand
+        <set>
+          <if test="brandName != null">
+           `brand_name` = #{brandName},
+      	  </if>
+          <if test="brandFirstLetter != null">
+           `brand_first_letter` = #{brandFirstLetter},
+      	  </if>
+          <if test="brandCreatetime != null">
+           `brand_createtime` = #{brandCreatetime},
+      	  </if>
+          <if test="brandModifytime != null">
+           `brand_modifytime` = #{brandModifytime},
+      	  </if>
+        </set>
+        WHERE   brand_id = #{brandId}
+    </update>
+    
+    <!--根据主键删除实体-->
+    <delete id="delete">
+      DELETE FROM che300_brand WHERE  brand_id = #{brandId}
+    </delete>
+
+    <!--删除大于零的ID-->
+    <delete id="deletePositiveId">
+      DELETE FROM che300_brand WHERE  brand_id > 0
+    </delete>
+
+	<!-- 单个添加品牌，忽略已存在的 -->
+	<insert id="addIgnoreCarBrand">
+		INSERT IGNORE INTO `che300_brand` (
+			`brand_id`
+			, `brand_name`
+			, `brand_first_letter`
+			, `brand_createtime`
+			, `brand_modifytime`
+		) VALUES (
+			#{brandId}
+			, #{brandName}
+			, #{brandFirstLetter}
+			, #{brandCreatetime}
+			, #{brandModifytime}
+		)
+	</insert>
+
+	<!-- 批量添加品牌，忽略已存在的 -->
+	<insert id="addIgnoreCarBrands">
+		INSERT IGNORE INTO `che300_brand` (
+			`brand_id`
+			, `brand_name`
+			, `brand_first_letter`
+			, `brand_createtime`
+			, `brand_modifytime`
+		) VALUES (
+		<foreach collection="collect" separator=", (" item="item">
+			#{item.brandId}
+			, #{item.brandName}
+			, #{item.brandFirstLetter}
+			, #{item.brandCreatetime}
+			, #{item.brandModifytime}
+			)
+		</foreach>
+	</insert>
+
+</mapper>

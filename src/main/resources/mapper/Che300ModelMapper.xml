@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 车300车型数据 -->
+<mapper namespace="cn.victorplus.vehicle.mapper.Che300ModelMapper">
+    <resultMap type="cn.victorplus.vehicle.bean.db.Che300Model" id="resultChe300ModelMap">
+        <!-- ID -->
+        <id column="id" property="id"/>
+        <!-- 品牌ID -->
+        <result column="brand_id" property="brandId"/>
+        <!-- 品牌名称 -->
+        <result column="brand_name" property="brandName"/>
+        <!-- 车系ID -->
+        <result column="series_id" property="seriesId"/>
+        <!-- 车系名称 -->
+        <result column="series_name" property="seriesName"/>
+        <!-- 车系分组名称 -->
+        <result column="series_group_name" property="seriesGroupName"/>
+        <!-- 车型ID -->
+        <result column="model_id" property="modelId"/>
+        <!-- 车型名称 -->
+        <result column="model_name" property="modelName"/>
+        <!-- 车型年款 -->
+        <result column="model_year" property="modelYear"/>
+        <!-- 颜色 -->
+        <result column="color" property="color"/>
+        <!-- 排量 -->
+        <result column="model_liter" property="modelLiter"/>
+        <!-- 排放标准 -->
+        <result column="model_emission_standard" property="modelEmissionStandard"/>
+        <!-- 变速箱类型 -->
+        <result column="model_gear" property="modelGear"/>
+        <!-- 车型指导价 -->
+        <result column="model_price" property="modelPrice"/>
+        <!-- 最小上牌年份 -->
+        <result column="min_reg_year" property="minRegYear"/>
+        <!-- 最大上牌年份 -->
+        <result column="max_reg_year" property="maxRegYear"/>
+        <!-- VIN码 -->
+        <result column="vin" property="vin"/>
+    </resultMap>
+
+    <!-- 单个添加车300车型数据 -->
+    <insert id="addChe300Model">
+        INSERT INTO `che300_model` (
+            `id`
+            , `brand_id`
+            , `brand_name`
+            , `series_id`
+            , `series_name`
+            , `series_group_name`
+            , `model_id`
+            , `model_name`
+            , `model_year`
+            , `color`
+            , `model_liter`
+            , `model_emission_standard`
+            , `model_gear`
+            , `model_price`
+            , `min_reg_year`
+            , `max_reg_year`
+            , `vin`
+        ) VALUES (
+            #{id}
+            , #{brandId}
+            , #{brandName}
+            , #{seriesId}
+            , #{seriesName}
+            , #{seriesGroupName}
+            , #{modelId}
+            , #{modelName}
+            , #{modelYear}
+            , #{color}
+            , #{modelLiter}
+            , #{modelEmissionStandard}
+            , #{modelGear}
+            , #{modelPrice}
+            , #{minRegYear}
+            , #{maxRegYear}
+            , #{vin}
+        )
+    </insert>
+
+    <!-- 单个添加车300车型数据，忽略已存在的 -->
+    <insert id="addIgnoreChe300Model">
+        INSERT IGNORE INTO `che300_model` (
+            `id`
+            , `brand_id`
+            , `brand_name`
+            , `series_id`
+            , `series_name`
+            , `series_group_name`
+            , `model_id`
+            , `model_name`
+            , `model_year`
+            , `color`
+            , `model_liter`
+            , `model_emission_standard`
+            , `model_gear`
+            , `model_price`
+            , `min_reg_year`
+            , `max_reg_year`
+            , `vin`
+        ) VALUES (
+            #{id}
+            , #{brandId}
+            , #{brandName}
+            , #{seriesId}
+            , #{seriesName}
+            , #{seriesGroupName}
+            , #{modelId}
+            , #{modelName}
+            , #{modelYear}
+            , #{color}
+            , #{modelLiter}
+            , #{modelEmissionStandard}
+            , #{modelGear}
+            , #{modelPrice}
+            , #{minRegYear}
+            , #{maxRegYear}
+            , #{vin}
+        )
+    </insert>
+
+    <!-- 批量添加车300车型数据 -->
+    <insert id="addChe300Models">
+        INSERT INTO `che300_model` (
+        `id`
+        , `brand_id`
+        , `brand_name`
+        , `series_id`
+        , `series_name`
+        , `series_group_name`
+        , `model_id`
+        , `model_name`
+        , `model_year`
+        , `color`
+        , `model_liter`
+        , `model_emission_standard`
+        , `model_gear`
+        , `model_price`
+        , `min_reg_year`
+        , `max_reg_year`
+        , `vin`
+        ) VALUES (
+        <foreach collection="collect" separator=", (" item="item">
+            #{item.id}
+            , #{item.brandId}
+            , #{item.brandName}
+            , #{item.seriesId}
+            , #{item.seriesName}
+            , #{item.seriesGroupName}
+            , #{item.modelId}
+            , #{item.modelName}
+            , #{item.modelYear}
+            , #{item.color}
+            , #{item.modelLiter}
+            , #{item.modelEmissionStandard}
+            , #{item.modelGear}
+            , #{item.modelPrice}
+            , #{item.minRegYear}
+            , #{item.maxRegYear}
+            , #{item.vin}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 批量添加车300车型数据，忽略已存在的 -->
+    <insert id="addIgnoreChe300Models">
+        INSERT IGNORE INTO `che300_model` (
+        `id`
+        , `brand_id`
+        , `brand_name`
+        , `series_id`
+        , `series_name`
+        , `series_group_name`
+        , `model_id`
+        , `model_name`
+        , `model_year`
+        , `color`
+        , `model_liter`
+        , `model_emission_standard`
+        , `model_gear`
+        , `model_price`
+        , `min_reg_year`
+        , `max_reg_year`
+        , `vin`
+        ) VALUES (
+        <foreach collection="collect" separator=", (" item="item">
+            #{item.id}
+            , #{item.brandId}
+            , #{item.brandName}
+            , #{item.seriesId}
+            , #{item.seriesName}
+            , #{item.seriesGroupName}
+            , #{item.modelId}
+            , #{item.modelName}
+            , #{item.modelYear}
+            , #{item.color}
+            , #{item.modelLiter}
+            , #{item.modelEmissionStandard}
+            , #{item.modelGear}
+            , #{item.modelPrice}
+            , #{item.minRegYear}
+            , #{item.maxRegYear}
+            , #{item.vin}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 根据主键查询车300车型数据 -->
+    <select id="findById" resultMap="resultChe300ModelMap">
+        SELECT * FROM `che300_model` WHERE `id` = #{id}
+    </select>
+
+    <!-- 更新车300车型数据 -->
+    <update id="updateChe300Model">
+        UPDATE `che300_model`
+        SET
+        `id` = #{id}
+        <if test="brandId != null">
+            , `brand_id` = #{brandId}
+        </if>
+        <if test="brandName != null and brandName != ''">
+            , `brand_name` = #{brandName}
+        </if>
+        <if test="seriesId != null">
+            , `series_id` = #{seriesId}
+        </if>
+        <if test="seriesName != null and seriesName != ''">
+            , `series_name` = #{seriesName}
+        </if>
+        <if test="seriesGroupName != null and seriesGroupName != ''">
+            , `series_group_name` = #{seriesGroupName}
+        </if>
+        <if test="modelId != null">
+            , `model_id` = #{modelId}
+        </if>
+        <if test="modelName != null and modelName != ''">
+            , `model_name` = #{modelName}
+        </if>
+        <if test="modelYear != null">
+            , `model_year` = #{modelYear}
+        </if>
+        <if test="color != null and color != ''">
+            , `color` = #{color}
+        </if>
+        <if test="modelLiter != null and modelLiter != ''">
+            , `model_liter` = #{modelLiter}
+        </if>
+        <if test="modelEmissionStandard != null and modelEmissionStandard != ''">
+            , `model_emission_standard` = #{modelEmissionStandard}
+        </if>
+        <if test="modelGear != null and modelGear != ''">
+            , `model_gear` = #{modelGear}
+        </if>
+        <if test="modelPrice != null">
+            , `model_price` = #{modelPrice}
+        </if>
+        <if test="minRegYear != null and minRegYear != ''">
+            , `min_reg_year` = #{minRegYear}
+        </if>
+        <if test="maxRegYear != null and maxRegYear != ''">
+            , `max_reg_year` = #{maxRegYear}
+        </if>
+        <if test="vin != null and vin != ''">
+            , `vin` = #{vin}
+        </if>
+        WHERE `id` = #{id}
+    </update>
+
+    <!-- 更新车300车型数据，旧的不为空的数据不更新 -->
+    <update id="updateChe300ModelEmptyProp">
+        UPDATE `che300_model`
+        SET
+        `id` = #{id}
+        <if test="originChe300Model.brandId == null">
+            , `brand_id` = #{newChe300Model.brandId}
+        </if>
+        <if test="originChe300Model.brandName == null or originChe300Model.brandName == ''">
+            , `brand_name` = #{newChe300Model.brandName}
+        </if>
+        <if test="originChe300Model.seriesId == null">
+            , `series_id` = #{newChe300Model.seriesId}
+        </if>
+        <if test="originChe300Model.seriesName == null or originChe300Model.seriesName == ''">
+            , `series_name` = #{newChe300Model.seriesName}
+        </if>
+        <if test="originChe300Model.seriesGroupName == null or originChe300Model.seriesGroupName == ''">
+            , `series_group_name` = #{newChe300Model.seriesGroupName}
+        </if>
+        <if test="originChe300Model.modelId == null">
+            , `model_id` = #{newChe300Model.modelId}
+        </if>
+        <if test="originChe300Model.modelName == null or originChe300Model.modelName == ''">
+            , `model_name` = #{newChe300Model.modelName}
+        </if>
+        <if test="originChe300Model.modelYear == null">
+            , `model_year` = #{newChe300Model.modelYear}
+        </if>
+        <if test="originChe300Model.color == null or originChe300Model.color == ''">
+            , `color` = #{newChe300Model.color}
+        </if>
+        <if test="originChe300Model.modelLiter == null or originChe300Model.modelLiter == ''">
+            , `model_liter` = #{newChe300Model.modelLiter}
+        </if>
+        <if test="originChe300Model.modelEmissionStandard == null or originChe300Model.modelEmissionStandard == ''">
+            , `model_emission_standard` = #{newChe300Model.modelEmissionStandard}
+        </if>
+        <if test="originChe300Model.modelGear == null or originChe300Model.modelGear == ''">
+            , `model_gear` = #{newChe300Model.modelGear}
+        </if>
+        <if test="originChe300Model.modelPrice == null">
+            , `model_price` = #{newChe300Model.modelPrice}
+        </if>
+        <if test="originChe300Model.minRegYear == null or originChe300Model.minRegYear == ''">
+            , `min_reg_year` = #{newChe300Model.minRegYear}
+        </if>
+        <if test="originChe300Model.maxRegYear == null or originChe300Model.maxRegYear == ''">
+            , `max_reg_year` = #{newChe300Model.maxRegYear}
+        </if>
+        <if test="originChe300Model.vin == null or originChe300Model.vin == ''">
+            , `vin` = #{newChe300Model.vin}
+        </if>
+        WHERE `id` = #{id}
+    </update>
+
+    <!-- 根据vin码获取车型数据 -->
+    <select id="findByVin" resultMap="resultChe300ModelMap">
+        SELECT * FROM `che300_model` WHERE `vin` = #{vin}
+    </select>
+
+</mapper>

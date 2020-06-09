@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.victorplus.vehicle.mapper.Che300SeriesMapper">
+	<!--查询字段-->
+	<sql id="columns">
+	    a.`series_id`,
+	    a.`series_name`,
+	    a.`brand_id`,
+	    a.`series_group_name`,
+	    a.`series_createtime`,
+	    a.`series_modifytime`
+	</sql>
+	
+	<!--查询结果集-->
+	<resultMap id="beanMap" type="cn.victorplus.vehicle.bean.db.Che300Series">
+	    <result property="seriesId" column="series_id"/>
+	    <result property="seriesName" column="series_name"/>
+	    <result property="brandId" column="brand_id"/>
+	    <result property="seriesGroupName" column="series_group_name"/>
+	    <result property="seriesCreatetime" column="series_createtime"/>
+	    <result property="seriesModifytime" column="series_modifytime"/>
+	</resultMap>
+	
+	<!--根据主键获取实体-->
+	<select id="get" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM
+		che300_series a
+	  WHERE 
+	     series_id = #{seriesId}
+	</select>
+	
+	<!--根据品牌ID获取实体列表-->
+	<select id="getByBid" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM
+		che300_series a
+	  WHERE 
+	     brand_id = #{brandId}
+	  ORDER BY  series_id asc
+	</select>
+
+	<!--根据车系ID获取实体列表-->
+	<select id="getBySeriesId" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM
+		che300_series a
+	  WHERE
+		series_id = #{seriesId}
+	  ORDER BY  series_id asc LIMIT 1
+	</select>
+
+	<select id="countSeries" resultType="int">
+        SELECT count(1) FROM `che300_series` WHERE `series_id` = #{seriesId}
+    </select>
+
+	<select id="getByName" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM che300_series a
+	  WHERE series_name LIKE CONCAT('%',#{name},'%')
+	  ORDER BY series_id asc
+	</select>
+
+	<select id="getByBidAndFid" resultMap="beanMap">
+	  SELECT
+		<include refid="columns"/>
+	  FROM
+		che300_series a
+	  WHERE
+		brand_id = #{brandId}
+	  ORDER BY series_id asc
+	</select>
+
+	<!-- 新增记录 -->
+	<insert id="add" useGeneratedKeys="true" keyProperty="seriesId" parameterType="cn.victorplus.vehicle.bean.db.Che300Series">
+	  INSERT INTO che300_series
+	    (
+	    `series_name`
+	    ,`brand_id`
+	    ,`series_group_name`
+	    ,`series_createtime`
+	    ,`series_modifytime`
+	    )
+	   VALUES 
+	   (
+	    #{seriesName}
+	    ,#{brandId}
+	    ,#{seriesGroupName}
+	    ,#{seriesCreatetime}
+	    ,#{seriesModifytime}
+	   )
+	</insert>
+    
+    
+    <!--更新实体信息-->
+    <update id="update" parameterType="cn.victorplus.vehicle.bean.db.Che300Series">
+      UPDATE 
+      	che300_series
+      SET 
+        `series_name` = #{seriesName}
+        ,`brand_id` = #{brandId}
+        ,`series_group_name` = #{seriesGroupName}
+        ,`series_createtime` = #{seriesCreatetime}
+        ,`series_modifytime` = #{seriesModifytime}
+      WHERE  series_id = #{seriesId}
+    </update>
+    
+    <!--更新实体信息，null值字段不更新-->
+    <update id="updateIgnoreNull" parameterType="cn.victorplus.vehicle.bean.db.Che300Series">
+        UPDATE che300_series
+        <set>
+          <if test="seriesName != null">
+           `series_name` = #{seriesName},
+      	  </if>
+          <if test="brandId != null">
+           `brand_id` = #{brandId},
+      	  </if>
+          <if test="seriesGroupName != null">
+           `series_group_name` = #{seriesGroupName},
+      	  </if>
+          <if test="seriesCreatetime != null">
+           `series_createtime` = #{seriesCreatetime},
+      	  </if>
+          <if test="seriesModifytime != null">
+           `series_modifytime` = #{seriesModifytime},
+      	  </if>
+        </set>
+        WHERE   series_id = #{seriesId}
+    </update>
+    
+    <!--根据主键删除实体-->
+    <delete id="delete">
+      DELETE FROM che300_series WHERE  series_id = #{seriesId}
+    </delete>
+
+    <!--删除大于零的ID-->
+    <delete id="deletePositiveId">
+      DELETE FROM che300_series WHERE  series_id > 0
+    </delete>
+
+	<!-- 单个添加车系，忽略已存在的 -->
+	<insert id="addIgnoreCarSeries">
+		INSERT IGNORE INTO `che300_series` (
+			`series_id`
+			, `series_name`
+			, `brand_id`
+			, `series_group_name`
+			, `series_createtime`
+			, `series_modifytime`
+		) VALUES (
+			#{seriesId}
+			, #{seriesName}
+			, #{brandId}
+			, #{seriesGroupName}
+			, #{seriesCreatetime}
+			, #{seriesModifytime}
+		)
+	</insert>
+
+	<!-- 批量添加车系，忽略已存在的 -->
+	<insert id="addIgnoreCarSeriess">
+		INSERT IGNORE INTO `che300_series` (
+			`series_id`
+			, `series_name`
+			, `brand_id`
+			, `series_group_name`
+			, `series_createtime`
+			, `series_modifytime`
+		) VALUES (
+		<foreach collection="collect" separator=", (" item="item">
+			#{item.seriesId}
+			, #{item.seriesName}
+			, #{item.brandId}
+			, #{item.seriesGroupName}
+			, #{item.seriesCreatetime}
+			, #{item.seriesModifytime}
+		)
+		</foreach>
+	</insert>
+
+</mapper>

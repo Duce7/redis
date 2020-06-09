@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!--引入通用定义-->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+
+    <!--引入运行参数-->
+    <springProperty name="APP_NAME" scope="context" source="spring.application.name"/>
+    <property name="LOG_DIR" value="${log_dir}"/>
+
+
+    <!-- 按照每天生成日志文件并压缩 -->
+    <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!--网络请求日志级别-->
+    <logger name="com.example.redis" level="debug"/>
+    <logger name="com.netflix" level="INFO"/>
+    <logger name="org.apache.http" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="FILE_INFO"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

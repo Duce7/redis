@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--  -->
+<mapper namespace="cn.victorplus.vehicle.mapper.Che300CityMapper">
+    <resultMap type="cn.victorplus.vehicle.bean.db.Che300City" id="resultChe300CityMap">
+        <!--  -->
+        <id column="city_id" property="cityId"/>
+        <!--  -->
+        <result column="city_name" property="cityName"/>
+        <!--  -->
+        <result column="prov_id" property="provId"/>
+        <!--  -->
+        <result column="prov_name" property="provName"/>
+        <!--  -->
+        <result column="city_modifytime" property="cityModifytime"/>
+        <!--  -->
+        <result column="city_createtime" property="cityCreatetime"/>
+    </resultMap>
+
+
+    <!-- 单个添加，忽略已存在的 -->
+    <insert id="addIgnoreBitCity">
+        INSERT IGNORE INTO `che300_city` (
+            `city_id`
+            , `city_name`
+            , `prov_id`
+            , `prov_name`
+            , `city_modifytime`
+            , `city_createtime`
+        ) VALUES (
+            #{cityId}
+            , #{cityName}
+            , #{provId}
+            , #{provName}
+            , #{cityModifytime}
+            , #{cityCreatetime}
+        )
+    </insert>
+
+
+
+</mapper>

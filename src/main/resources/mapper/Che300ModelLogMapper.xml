@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 车300请求日志表 -->
+<mapper namespace="cn.victorplus.vehicle.mapper.Che300ModelLogMapper">
+    <resultMap type="cn.victorplus.vehicle.bean.db.Che300ModelLog" id="resultChe300ModelLogMap">
+        <!-- ID -->
+        <id column="id" property="id"/>
+        <!-- Boss系统订单号 -->
+        <result column="app_code" property="appCode"/>
+        <!-- 调用系统名称 -->
+        <result column="sys_name" property="sysName"/>
+        <!-- 请求类型(1-VIN码查询,2-查询校验) -->
+        <result column="che300_req_type" property="che300ReqType"/>
+        <!-- 查询VIN码 -->
+        <result column="vin" property="vin"/>
+        <!-- 车型ID -->
+        <result column="model_id" property="modelId"/>
+        <!-- 请求状态，0失败，1成功 -->
+        <result column="status" property="status"/>
+        <!-- 请求结果 -->
+        <result column="result" property="result"/>
+        <!-- 创建时间 -->
+        <result column="created" property="created"/>
+        <!-- 创建时间 -->
+        <result column="model_quote" property="modelQuote"/>
+        <!-- 创建时间 -->
+        <result column="params_key" property="paramsKey"/>
+    </resultMap>
+
+    <select id="queryByParamsKey" resultMap="resultChe300ModelLogMap">
+        SELECT *
+        FROM `che300_model_log`
+        WHERE  created &gt;= #{fromDate}
+            AND `status` = 0
+            AND params_key = #{paramsKey}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="queryByVin" resultMap="resultChe300ModelLogMap">
+        SELECT *
+        FROM `che300_model_log`
+        WHERE  created &gt;= #{fromDate}
+            AND `status` = 0
+            and che300_req_type = 8
+            AND vin = #{vin}
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <!-- 单个添加车300请求日志表 -->
+    <insert id="addChe300ModelLog">
+        INSERT INTO `che300_model_log` (
+            `id`
+            , `app_code`
+            , `sys_name`
+            , `che300_req_type`
+            , `vin`
+            , `model_id`
+            , `status`
+            , `result`
+            , `created`
+            , `model_quote`
+            , `params_key`
+        ) VALUES (
+            #{id}
+            , #{appCode}
+            , #{sysName}
+            , #{che300ReqType}
+            , #{vin}
+            , #{modelId}
+            , #{status}
+            , #{result}
+            , #{created}
+            , #{modelQuote}
+            , #{paramsKey}
+        )
+    </insert>
+
+    <!-- 单个添加车300请求日志表，忽略已存在的 -->
+    <insert id="addIgnoreChe300ModelLog">
+        INSERT IGNORE INTO `che300_model_log` (
+            `id`
+            , `app_code`
+            , `sys_name`
+            , `che300_req_type`
+            , `vin`
+            , `model_id`
+            , `status`
+            , `result`
+            , `created`
+            , `params_key`
+            , `model_quote`
+        ) VALUES (
+            #{id}
+            , #{appCode}
+            , #{sysName}
+            , #{che300ReqType}
+            , #{vin}
+            , #{modelId}
+            , #{status}
+            , #{result}
+            , #{created}
+            , #{paramsKey}
+            , #{modelQuote}
+        )
+    </insert>
+
+    <!-- 批量添加车300请求日志表 -->
+    <insert id="addChe300ModelLogs">
+        INSERT INTO `che300_model_log` (
+            `id`
+            , `app_code`
+            , `sys_name`
+            , `che300_req_type`
+            , `vin`
+            , `model_id`
+            , `status`
+            , `result`
+            , `created`
+            , `model_quote`
+            , `params_key`
+        ) VALUES (
+        <foreach collection="collect" separator="), (" item="item">
+                #{item.id}
+                , #{item.appCode}
+                , #{item.sysName}
+                , #{item.che300ReqType}
+                , #{item.vin}
+                , #{item.modelId}
+                , #{item.status}
+                , #{item.result}
+                , #{item.created}
+                , #{item.modelQuote}
+                , #{item.paramsKey}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 批量添加车300请求日志表，忽略已存在的 -->
+    <insert id="addIgnoreChe300ModelLogs">
+        INSERT IGNORE INTO `che300_model_log` (
+            `id`
+            , `app_code`
+            , `sys_name`
+            , `che300_req_type`
+            , `vin`
+            , `model_id`
+            , `status`
+            , `result`
+            , `created`
+            , `params_key`
+            , `model_quote`
+        ) VALUES (
+        <foreach collection="collect" separator=", (" item="item">
+                #{item.id}
+                , #{item.appCode}
+                , #{item.sysName}
+                , #{item.che300ReqType}
+                , #{item.vin}
+                , #{item.modelId}
+                , #{item.status}
+                , #{item.result}
+                , #{item.created}
+                , #{item.paramsKey}
+                , #{item.modelQuote}
+        )
+        </foreach>
+    </insert>
+
+    <!-- 根据主键查询车300请求日志表 -->
+    <select id="findById" resultMap="resultChe300ModelLogMap">
+        SELECT * FROM `che300_model_log` WHERE `id` = #{id}
+    </select>
+
+    <!-- 更新车300请求日志表 -->
+    <update id="updateChe300ModelLog">
+        UPDATE `che300_model_log`
+        SET
+            `id` = #{id}
+            <if test="appCode != null and appCode != ''">
+            , `app_code` = #{appCode}
+            </if>
+            <if test="sysName != null and sysName != ''">
+            , `sys_name` = #{sysName}
+            </if>
+            <if test="che300ReqType != null">
+            , `che300_req_type` = #{che300ReqType}
+            </if>
+            <if test="vin != null and vin != ''">
+            , `vin` = #{vin}
+            </if>
+            <if test="modelId != null">
+            , `model_id` = #{modelId}
+            </if>
+            <if test="status != null">
+            , `status` = #{status}
+            </if>
+            <if test="result != null and result != ''">
+            , `result` = #{result}
+            </if>
+            <if test="created != null">
+            , `created` = #{created}
+            </if>
+            <if test="paramsKey != null">
+            , `params_key` = #{paramsKey}
+            </if>
+            <if test="modelQuote != null">
+            , `model_quote` = #{modelQuote}
+            </if>
+        WHERE `id` = #{id}
+    </update>
+
+    <!-- 更新车300请求日志表，旧的不为空的数据不更新 -->
+    <update id="updateChe300ModelLogEmptyProp">
+        UPDATE `che300_model_log`
+        SET
+            `id` = #{id}
+            <if test="originChe300ModelLog.appCode == null or originChe300ModelLog.appCode == ''">
+            , `app_code` = #{newChe300ModelLog.appCode}
+            </if>
+            <if test="originChe300ModelLog.sysName == null or originChe300ModelLog.sysName == ''">
+            , `sys_name` = #{newChe300ModelLog.sysName}
+            </if>
+            <if test="originChe300ModelLog.che300ReqType == null">
+            , `che300_req_type` = #{newChe300ModelLog.che300ReqType}
+            </if>
+            <if test="originChe300ModelLog.vin == null or originChe300ModelLog.vin == ''">
+            , `vin` = #{newChe300ModelLog.vin}
+            </if>
+            <if test="originChe300ModelLog.modelId == null">
+            , `model_id` = #{newChe300ModelLog.modelId}
+            </if>
+            <if test="originChe300ModelLog.status == null">
+            , `status` = #{newChe300ModelLog.status}
+            </if>
+            <if test="originChe300ModelLog.result == null or originChe300ModelLog.result == ''">
+            , `result` = #{newChe300ModelLog.result}
+            </if>
+            <if test="originChe300ModelLog.created == null">
+            , `created` = #{newChe300ModelLog.created}
+            </if>
+            <if test="originChe300ModelLog.modelQuote == null">
+            , `model_quote` = #{newChe300ModelLog.modelQuote}
+            </if>
+            <if test="originChe300ModelLog.paramsKey == null">
+            , `params_key` = #{newChe300ModelLog.paramsKey}
+            </if>
+        WHERE `id` = #{id}
+    </update>
+
+</mapper>

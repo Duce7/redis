@@ -178,6 +178,6 @@ public class DateService {
 
     public Response<Che300Brand> getBrand(Long id) {
         Che300Brand che300Brand = che300BrandMapper.get(id);
-        if ()
+        return Response.success();
     }
 }

@@ -37,8 +37,8 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
-    @Resource
-    private UserMapper userMapper;
+//    @Resource
+//    private UserMapper userMapper;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception { //配置策略
@@ -55,10 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
 //        auth.eraseCredentials(false);
-        List<User> users = userMapper.getAll();
-        for (User a : users) {
-            auth.inMemoryAuthentication().withUser(a.getName()).roles("admin").password(a.getPwd());
-        }
+//        List<User> users = userMapper.getAll();
+//        for (User a : users) {
+            auth.inMemoryAuthentication().withUser("admin").roles("admin").password("1234");
+//        }
     }
 
     @Bean
@@ -93,16 +93,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             }
         };
     }
+
+    @Override
     @Bean
     public UserDetailsService userDetailsService() {    //用户登录实现
         return new UserDetailsService() {
-            @Autowired
-            private UserMapper userRepository;
+//            @Autowired
+//            private UserMapper userRepository;
 
             @Override
             public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-                User user = userRepository.getOne(s);
-                if (user == null) throw new UsernameNotFoundException("Username " + s + " not found");
+//                User user = userRepository.getOne(s);
+                User user = new User();
+                user.setId(1);
+                user.setName("admin");
+                user.setPwd("1234");
+                user.setUsed(1);
+//                if (user == null) throw new UsernameNotFoundException("Username " + s + " not found");
                 return new SecurityUser(user);
             }
         };
